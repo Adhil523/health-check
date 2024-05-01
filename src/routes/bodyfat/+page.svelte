@@ -24,25 +24,6 @@
 
 
     }
-//     const test=async ()=>{
-//       const url = 'https://fitness-calculator.p.rapidapi.com/dailycalorie?age=25&gender=male&height=180&weight=70&activitylevel=level_7';
-// const options = {
-// 	method: 'GET',
-// 	headers: {
-// 		'X-RapidAPI-Key': 'a7896790aemsh8824392505e3c54p152987jsn3ae2c309f74c',
-// 		'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com'
-// 	}
-// };
-
-// try {
-// 	const response = await fetch(url, options);
-// 	const result = await response.text();
-// 	console.log(JSON.parse(result).data);
-// } catch (error) {
-// 	console.error(error);
-// }
-//     }
-//   test()
 
 
 </script>
