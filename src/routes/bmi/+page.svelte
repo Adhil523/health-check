@@ -4,6 +4,7 @@
         weight:'',
         height:''
     }
+    let data=null;
     const handleclick=async()=>{
         console.log(formData)
         const response=await fetch(`https://fitness-calculator.p.rapidapi.com/bmi?age=${formData.age}&weight=${formData.weight}&height=${formData.height}`,{
@@ -13,7 +14,8 @@
 					'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com'
 				}
         }).then((response)=>response.text())
-        console.log(JSON.parse(response).data)
+        data=JSON.parse(response).data
+        
     }
 
 </script>
@@ -30,7 +32,7 @@
                       id="name"
                       placeholder="Enter your age(in years)"
                       type="text"
-                      class="w-full h-14  rounded-md  border-white p-3 border-b placeholder-slate-500"
+                      class="w-full h-14  rounded-md text-black border-white p-3 border-b placeholder-slate-500"
                       required
                       name="age"
                       bind:value={formData.age}
@@ -42,7 +44,7 @@
                       id="email"
                       placeholder="Enter your weight(in kgs)"
                       type="text"
-                      class="w-full h-14 rounded-md border-b border-white bg-mirage-950 p-3 placeholder-slate-500"
+                      class="w-full h-14 rounded-md border-b border-white bg-mirage-950 p-3 placeholder-slate-500 text-black"
                       required
                       name="weight"
                       bind:value={formData.weight}
@@ -54,7 +56,7 @@
                       id="company"
                       placeholder="Your height(in cms)"
                       type="text"
-                      class="w-full h-14 rounded-md  border-b border-white bg-mirage-950 p-3 placeholder-slate-500"
+                      class="w-full h-14 rounded-md text-black border-b border-white bg-mirage-950 p-3 placeholder-slate-500"
                       required
                       name="height"
                       bind:value={formData.height}
@@ -66,6 +68,16 @@
                     on:click={handleclick}
                   >Submit
                   </button>
+                  {#if data}
+                  <div class="flex flex-col gap-5 border border-double border-white p-6 rounded-md">
+                    <h2 class="text-3xl font-semibold">Patient Report</h2>
+                    <span>BMI: {data.bmi}</span>
+                    <span>Health Status: {data.health}</span>
+                    <span>Healthy BMI Range: {data.healthy_bmi_range}</span>
+
+                  </div>
+                  {/if}
+                  
                 </div>
               </form>
         </div>
