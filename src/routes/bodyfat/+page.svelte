@@ -1,4 +1,5 @@
 <script>
+	import { bodyFat } from '../../utils/apiContext.js';
 	let formData = {
 		age: '',
 		gender: '',
@@ -7,25 +8,23 @@
 		activity: 'level_1'
 	};
 	let bmr = '';
-  let goals=null
+	let goals = null;
+	let bodyfatFunc = null;
+	bodyFat.subscribe((val) => {
+		bodyfatFunc = val;
+	});
 
 	const handleclick = async () => {
 		console.log(formData);
-		const response = await fetch(
-			`https://fitness-calculator.p.rapidapi.com/dailycalorie?age=${formData.age}&gender=${formData.gender}&height=${formData.height}&weight=${formData.weight}&activitylevel=${formData.activity}`,
-			{
-				method: 'GET',
-				headers: {
-					'X-RapidAPI-Key': 'a7896790aemsh8824392505e3c54p152987jsn3ae2c309f74c',
-					'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com'
-				}
-			}
-		).then((response) => response.text());
-		const data = JSON.parse(response).data;
-		console.log(data);
-
+		const data = await bodyfatFunc(
+			formData.age,
+			formData.gender,
+			formData.height,
+			formData.weight,
+			formData.activity
+		);
 		bmr = data.BMR;
-    goals=data.goals
+		goals = data.goals;
 	};
 </script>
 
@@ -99,22 +98,42 @@
 						on:click={handleclick}
 						>Submit
 					</button>
-          {#if bmr}
-                  <div class="flex flex-col gap-5 border border-double border-white p-6 rounded-md">
-                    <h2 class="text-3xl font-semibold">Patient Report</h2>
-                    <span>BMR: {bmr}</span>
-                    <h3 class="mb-3 underline">Goals</h3>
-                    <span>For Extreme weight gain - Gain weight: {goals["Extreme weight gain"]["gain weight"]} , Calorie: {goals["Extreme weight gain"]["calory"]}</span>
-                    <span>For Extreme weight loss - Loss weight: {goals["Extreme weight loss"]["loss weight"]} , Calorie: {goals["Extreme weight loss"]["calory"]}</span>
-                    <span>For Mild weight gain - Gain weight: {goals["Mild weight gain"]["gain weight"]} , Calorie: {goals["Mild weight gain"]["calory"]}</span>
-                    <span>For Mild weight loss - Loss weight: {goals["Mild weight loss"]["loss weight"]} , Calorie: {goals["Mild weight loss"]["calory"]}</span>
-                    <span>For Weight gain - Gain weight: {goals["Weight gain"]["gain weight"]} , Calorie: {goals["Weight gain"]["calory"]}</span>
-                    <span>For Weight lain - Loss weight: {goals["Weight loss"]["loss weight"]} , Calorie: {goals["Weight loss"]["calory"]}</span>
-                    <span>Miantain weight - {goals["maintain weight"]}</span>
-                    
-
-                  </div>
-                  {/if}
+					{#if bmr}
+						<div class="flex flex-col gap-5 border border-double border-white p-6 rounded-md">
+							<h2 class="text-3xl font-semibold">Patient Report</h2>
+							<span>BMR: {bmr}</span>
+							<h3 class="mb-3 underline">Goals</h3>
+							<span
+								>For Extreme weight gain - Gain weight: {goals['Extreme weight gain'][
+									'gain weight'
+								]} , Calorie: {goals['Extreme weight gain']['calory']}</span
+							>
+							<span
+								>For Extreme weight loss - Loss weight: {goals['Extreme weight loss'][
+									'loss weight'
+								]} , Calorie: {goals['Extreme weight loss']['calory']}</span
+							>
+							<span
+								>For Mild weight gain - Gain weight: {goals['Mild weight gain']['gain weight']} , Calorie:
+								{goals['Mild weight gain']['calory']}</span
+							>
+							<span
+								>For Mild weight loss - Loss weight: {goals['Mild weight loss']['loss weight']} , Calorie:
+								{goals['Mild weight loss']['calory']}</span
+							>
+							<span
+								>For Weight gain - Gain weight: {goals['Weight gain']['gain weight']} , Calorie: {goals[
+									'Weight gain'
+								]['calory']}</span
+							>
+							<span
+								>For Weight lain - Loss weight: {goals['Weight loss']['loss weight']} , Calorie: {goals[
+									'Weight loss'
+								]['calory']}</span
+							>
+							<span>Miantain weight - {goals['maintain weight']}</span>
+						</div>
+					{/if}
 				</div>
 			</form>
 		</div>
